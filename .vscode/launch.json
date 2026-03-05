@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CCMac}",
+            "name": "Debug CCMac",
+            "target": "CCMac",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug CCMac"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:CCMac}",
+            "name": "Release CCMac",
+            "target": "CCMac",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release CCMac"
+        }
+    ]
+}
