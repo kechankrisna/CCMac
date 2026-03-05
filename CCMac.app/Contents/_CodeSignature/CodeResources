@@ -3,9 +3,33 @@
 <plist version="1.0">
 <dict>
 	<key>files</key>
-	<dict/>
+	<dict>
+		<key>Resources/AppIcon.icns</key>
+		<data>
+		Lbk2x95KFha394OrpOVu9+c3UlI=
+		</data>
+		<key>Resources/CCMac_CCMac.bundle/AppIcon.png</key>
+		<data>
+		Y3Spa7FNsjbrP2SopVMXMEPosdA=
+		</data>
+	</dict>
 	<key>files2</key>
-	<dict/>
+	<dict>
+		<key>Resources/AppIcon.icns</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			OtT7qsKI0qSvfwZX8yD1V6wIzcPzxdHdlerRkZiORKY=
+			</data>
+		</dict>
+		<key>Resources/CCMac_CCMac.bundle/AppIcon.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			FDDPKJkTBTu3ExMnNLHQXzp7T6axSfVWMaV7nkkPoOc=
+			</data>
+		</dict>
+	</dict>
 	<key>rules</key>
 	<dict>
 		<key>^Resources/</key>

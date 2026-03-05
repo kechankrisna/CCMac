@@ -14,6 +14,8 @@ RELEASE_DIR=".build/release"
 APP_BUNDLE="${APP_NAME}.app"
 DMG_NAME="${APP_NAME}-${VERSION}.dmg"
 DMG_STAGING="dist_staging"
+ICON_SRC="Sources/CCMac/Resources/AppIcon.png"
+ICNS_PATH="Sources/CCMac/Resources/AppIcon.icns"
 
 echo ""
 echo "╔══════════════════════════════════════╗"
@@ -22,13 +24,42 @@ echo "╚═══════════════════════�
 echo ""
 
 # ── 1. Release build ──────────────────────────────────────────────────────────
-echo "▶ Step 1/5 — swift build -c release"
+echo "▶ Step 1/6 — swift build -c release"
 swift build -c release
 echo "  ✓ Build succeeded"
 
-# ── 2. Assemble .app bundle ───────────────────────────────────────────────────
+# ── 2. Generate .icns from AppIcon.png ───────────────────────────────────────
 echo ""
-echo "▶ Step 2/5 — Assembling ${APP_BUNDLE}"
+echo "▶ Step 2/6 — Generating AppIcon.icns"
+
+if [ ! -f "${ICON_SRC}" ]; then
+    echo "  ⚠ ${ICON_SRC} not found — skipping icon (app will use default)"
+else
+    ICONSET="AppIcon.iconset"
+    rm -rf "${ICONSET}"
+    mkdir "${ICONSET}"
+
+    # Generate all required macOS icon sizes using sips
+    sips -z 16   16   "${ICON_SRC}" --out "${ICONSET}/icon_16x16.png"       > /dev/null
+    sips -z 32   32   "${ICON_SRC}" --out "${ICONSET}/icon_16x16@2x.png"    > /dev/null
+    sips -z 32   32   "${ICON_SRC}" --out "${ICONSET}/icon_32x32.png"       > /dev/null
+    sips -z 64   64   "${ICON_SRC}" --out "${ICONSET}/icon_32x32@2x.png"    > /dev/null
+    sips -z 128  128  "${ICON_SRC}" --out "${ICONSET}/icon_128x128.png"     > /dev/null
+    sips -z 256  256  "${ICON_SRC}" --out "${ICONSET}/icon_128x128@2x.png"  > /dev/null
+    sips -z 256  256  "${ICON_SRC}" --out "${ICONSET}/icon_256x256.png"     > /dev/null
+    sips -z 512  512  "${ICON_SRC}" --out "${ICONSET}/icon_256x256@2x.png"  > /dev/null
+    sips -z 512  512  "${ICON_SRC}" --out "${ICONSET}/icon_512x512.png"     > /dev/null
+    sips -z 1024 1024 "${ICON_SRC}" --out "${ICONSET}/icon_512x512@2x.png"  > /dev/null
+
+    # Convert iconset → .icns
+    iconutil --convert icns "${ICONSET}" --output "${ICNS_PATH}"
+    rm -rf "${ICONSET}"
+    echo "  ✓ AppIcon.icns generated ($(du -sh ${ICNS_PATH} | cut -f1))"
+fi
+
+# ── 3. Assemble .app bundle ───────────────────────────────────────────────────
+echo ""
+echo "▶ Step 3/6 — Assembling ${APP_BUNDLE}"
 rm -rf "${APP_BUNDLE}"
 mkdir -p "${APP_BUNDLE}/Contents/MacOS"
 mkdir -p "${APP_BUNDLE}/Contents/Resources"
@@ -37,24 +68,31 @@ mkdir -p "${APP_BUNDLE}/Contents/Resources"
 cp "${RELEASE_DIR}/${APP_NAME}" "${APP_BUNDLE}/Contents/MacOS/${APP_NAME}"
 chmod +x "${APP_BUNDLE}/Contents/MacOS/${APP_NAME}"
 
-# Info.plist  (read by Finder, Spotlight, Gatekeeper)
-cp "Sources/CCMac/Resources/Info.plist" "${APP_BUNDLE}/Contents/Info.plist"
+# Info.plist (read by Finder, Spotlight, Gatekeeper)
+# Inject CFBundleIconFile so Finder picks up the icon
+INFO_PLIST="${APP_BUNDLE}/Contents/Info.plist"
+cp "Sources/CCMac/Resources/Info.plist" "${INFO_PLIST}"
+/usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string AppIcon" "${INFO_PLIST}" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Set :CFBundleIconFile AppIcon" "${INFO_PLIST}"
+
+# App icon
+if [ -f "${ICNS_PATH}" ]; then
+    cp "${ICNS_PATH}" "${APP_BUNDLE}/Contents/Resources/AppIcon.icns"
+    echo "  ✓ AppIcon.icns embedded"
+fi
 
 # SPM resource bundle (may or may not exist depending on assets)
 RESOURCE_BUNDLE="${RELEASE_DIR}/${APP_NAME}_${APP_NAME}.bundle"
 if [ -d "${RESOURCE_BUNDLE}" ]; then
     cp -R "${RESOURCE_BUNDLE}" "${APP_BUNDLE}/Contents/Resources/"
-    echo "  ✓ Copied resource bundle"
-else
-    echo "  ℹ No resource bundle found (expected if no non-plist assets)"
+    echo "  ✓ Copied SPM resource bundle"
 fi
 
 echo "  ✓ .app bundle assembled"
 
-# ── 3. Ad-hoc code sign ───────────────────────────────────────────────────────
+# ── 4. Ad-hoc code sign ───────────────────────────────────────────────────────
 echo ""
-echo "▶ Step 3/5 — Code signing (ad-hoc)"
-# '--deep' signs all nested bundles/frameworks too
+echo "▶ Step 4/6 — Code signing (ad-hoc)"
 codesign \
     --force \
     --deep \
@@ -64,15 +102,15 @@ codesign \
     "${APP_BUNDLE}"
 echo "  ✓ Signed ${APP_BUNDLE}"
 
-# ── 4. Verify signature ───────────────────────────────────────────────────────
+# ── 5. Verify signature ───────────────────────────────────────────────────────
 echo ""
-echo "▶ Step 4/5 — Verifying signature"
+echo "▶ Step 5/6 — Verifying signature"
 codesign --verify --verbose "${APP_BUNDLE}" 2>&1 | sed 's/^/  /'
 echo "  ✓ Signature valid"
 
-# ── 5. Create DMG ─────────────────────────────────────────────────────────────
+# ── 6. Create DMG ─────────────────────────────────────────────────────────────
 echo ""
-echo "▶ Step 5/5 — Creating ${DMG_NAME}"
+echo "▶ Step 6/6 — Creating ${DMG_NAME}"
 rm -rf "${DMG_STAGING}"
 mkdir "${DMG_STAGING}"
 cp -R "${APP_BUNDLE}" "${DMG_STAGING}/"
@@ -88,7 +126,6 @@ hdiutil create \
     "${DMG_NAME}"
 
 rm -rf "${DMG_STAGING}"
-
 echo "  ✓ ${DMG_NAME} created"
 
 # ── Summary ───────────────────────────────────────────────────────────────────

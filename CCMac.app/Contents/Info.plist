@@ -2,38 +2,39 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleIdentifier</key>
-    <string>com.ccmac.app</string>
-    <key>CFBundleName</key>
-    <string>CCMac</string>
-    <key>CFBundleDisplayName</key>
-    <string>CCMac</string>
-    <key>CFBundleVersion</key>
-    <string>1</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleExecutable</key>
-    <string>CCMac</string>
-    <key>LSMinimumSystemVersion</key>
-    <string>13.0</string>
-    <key>NSPrincipalClass</key>
-    <string>NSApplication</string>
-    <key>NSHighResolutionCapable</key>
-    <true/>
-    <key>LSUIElement</key>
-    <false/>
-    <key>NSSupportsAutomaticGraphicsSwitching</key>
-    <true/>
-    <key>NSHumanReadableCopyright</key>
-    <string>© 2025 KE CHANKRISNA. All rights reserved.</string>
-    <!-- Privacy descriptions for system access -->
-    <key>NSDesktopFolderUsageDescription</key>
-    <string>CCMac needs access to scan and clean files on your Desktop.</string>
-    <key>NSDocumentsFolderUsageDescription</key>
-    <string>CCMac needs access to scan files in your Documents folder.</string>
-    <key>NSDownloadsFolderUsageDescription</key>
-    <string>CCMac needs access to find duplicate and large files in Downloads.</string>
+	<key>CFBundleDisplayName</key>
+	<string>CCMac</string>
+	<key>CFBundleExecutable</key>
+	<string>CCMac</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.ccmac.app</string>
+	<key>CFBundleName</key>
+	<string>CCMac</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>LSUIElement</key>
+	<false/>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>CCMac needs access to scan and clean files on your Desktop.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>CCMac needs access to scan files in your Documents folder.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>CCMac needs access to find duplicate and large files in Downloads.</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>© 2025 KE CHANKRISNA. All rights reserved.</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
 </dict>
 </plist>
