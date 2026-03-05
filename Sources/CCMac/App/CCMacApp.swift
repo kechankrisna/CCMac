@@ -108,7 +108,7 @@ struct SettingsView: View {
             .padding()
 
             Form {
-                Text("Privacy policy: MacPaw follows GDPR compliance.\nNo personal data is shared for advertising.\nData deleted within 30 days upon request.")
+                Text("Privacy policy: CCMac follows GDPR compliance.\nNo personal data is shared for advertising.\nData deleted within 30 days upon request.")
                     .foregroundColor(.secondary)
             }
             .tabItem { Label("Privacy", systemImage: "lock.fill") }

@@ -485,12 +485,10 @@ AppSpacing.hero       // 48
 ### Corner Radius (`AppTypography.swift`)
 
 ```swift
-AppRadius.tiny        // 4
 AppRadius.small       // 6
 AppRadius.medium      // 10
-AppRadius.large       // 14
-AppRadius.xLarge      // 20
-AppRadius.full        // 9999 (pill)
+AppRadius.large       // 16
+AppRadius.xLarge      // 24
 ```
 
 ---

@@ -4,6 +4,7 @@ import SwiftUI
 struct MenuBarPopoverView: View {
     @StateObject private var monitor = SystemMonitorService()
     @State private var isProtected = true
+    @State private var settingsHovered = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -17,6 +18,49 @@ struct MenuBarPopoverView: View {
                     Text(healthLabel).font(AppFont.labelBadge).foregroundColor(healthColor)
                 }
                 Spacer()
+
+                // Gear drop-down menu
+                Menu {
+                    Button {
+                        openSettings()
+                    } label: {
+                        Label("Settings…", systemImage: "gearshape.fill")
+                    }
+
+                    Divider()
+
+                    Button {
+                        AboutWindowController.shared.show()
+                    } label: {
+                        Label("About CCMac", systemImage: "info.circle")
+                    }
+
+                    Divider()
+
+                    Button(role: .destructive) {
+                        NSApp.terminate(nil)
+                    } label: {
+                        Label("Quit CCMac", systemImage: "power")
+                    }
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 15))
+                        .foregroundColor(settingsHovered ? .white : Color.white.opacity(0.75))
+                        .frame(width: 28, height: 28)
+                        .background(
+                            RoundedRectangle(cornerRadius: AppRadius.small)
+                                .fill(settingsHovered
+                                      ? Color.white.opacity(0.12)
+                                      : Color.clear)
+                        )
+                }
+                .menuStyle(.borderlessButton)
+                .menuIndicator(.hidden)
+                .fixedSize()
+                .colorScheme(.dark)
+                .accentColor(.white)
+                .onHover { settingsHovered = $0 }
+                .help("Settings & More")
             }
             .padding(.horizontal, AppSpacing.standard)
             .padding(.vertical, AppSpacing.compact)
@@ -110,6 +154,12 @@ struct MenuBarPopoverView: View {
     private func openMainWindow() {
         NSApp.activate(ignoringOtherApps: true)
         NSApp.windows.first(where: { $0.canBecomeMain })?.makeKeyAndOrderFront(nil)
+    }
+
+    private func openSettings() {
+        NSApp.activate(ignoringOtherApps: true)
+        // macOS 13+ uses "showSettingsWindow:", macOS 12 used "showPreferencesWindow:"
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
     }
 
     private func formatBytes(_ bytes: Double) -> String {
