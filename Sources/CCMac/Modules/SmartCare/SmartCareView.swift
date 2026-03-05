@@ -83,6 +83,9 @@ struct SmartCareView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .background(Color.bgDark)
+        .onReceive(NotificationCenter.default.publisher(for: .startSmartCareScan)) { _ in
+            if vm.state == .idle { vm.startScan() }
+        }
     }
 }
 

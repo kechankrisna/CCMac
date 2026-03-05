@@ -60,8 +60,14 @@ struct MenuBarPopoverView: View {
 
             // Quick action buttons
             HStack(spacing: AppSpacing.compact) {
-                CMButton("Smart Care", style: .secondary) {}
-                CMButton("Scan Now") {}
+                CMButton("Smart Care", style: .secondary) {
+                    openMainWindow()
+                    NotificationCenter.default.post(name: .navigateToSmartCare, object: nil)
+                }
+                CMButton("Scan Now") {
+                    openMainWindow()
+                    NotificationCenter.default.post(name: .startSmartCareScan, object: nil)
+                }
             }
             .padding(.horizontal, AppSpacing.standard)
             .padding(.vertical, AppSpacing.compact)
@@ -69,12 +75,14 @@ struct MenuBarPopoverView: View {
             Divider().overlay(Color.white.opacity(0.06))
 
             // Open main app link
-            Button("Open CCMac →") {}
-                .buttonStyle(.plain)
-                .font(AppFont.bodyDefault)
-                .foregroundColor(.brandBlue)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, AppSpacing.compact)
+            Button("Open CCMac →") {
+                openMainWindow()
+            }
+            .buttonStyle(.plain)
+            .font(AppFont.bodyDefault)
+            .foregroundColor(.brandBlue)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, AppSpacing.compact)
         }
         .frame(width: 340)
         .background(Color.bgDark)
@@ -97,6 +105,11 @@ struct MenuBarPopoverView: View {
         case "Good":      return .brandGreen
         default:          return .warningOrange
         }
+    }
+
+    private func openMainWindow() {
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.windows.first(where: { $0.canBecomeMain })?.makeKeyAndOrderFront(nil)
     }
 
     private func formatBytes(_ bytes: Double) -> String {

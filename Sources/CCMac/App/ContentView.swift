@@ -19,6 +19,12 @@ struct ContentView: View {
         }
         .frame(minWidth: 1060, minHeight: 700)
         .preferredColorScheme(.dark)
+        .onReceive(NotificationCenter.default.publisher(for: .navigateToSmartCare)) { _ in
+            selectedModule = .smartCare
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .startSmartCareScan)) { _ in
+            selectedModule = .smartCare
+        }
     }
 
     @ViewBuilder

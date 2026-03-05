@@ -235,3 +235,9 @@ struct HealthRecommendation: Identifiable {
         }
     }
 }
+
+// MARK: - App-wide Notification Names
+extension Notification.Name {
+    static let navigateToSmartCare = Notification.Name("com.ccmac.navigateToSmartCare")
+    static let startSmartCareScan  = Notification.Name("com.ccmac.startSmartCareScan")
+}

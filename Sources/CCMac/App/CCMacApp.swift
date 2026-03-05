@@ -7,6 +7,12 @@ struct CCMacApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var showMenuBarPopover = false
 
+    init() {
+        // Must be here — this is the earliest point before SwiftUI creates any window.
+        // AppDelegate.init() and applicationDidFinishLaunching are both too late.
+        NSWindow.allowsAutomaticWindowTabbing = false
+    }
+
     var body: some Scene {
         // Main window
         WindowGroup {
