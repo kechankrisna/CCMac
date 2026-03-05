@@ -1,154 +1,138 @@
-# CCMac — macOS System Cleaner
+<p align="center">
+  <img src="Sources/CCMac/Resources/AppIcon.png" width="128" height="128" alt="CCMac Icon" />
+</p>
+
+<h1 align="center">CCMac — macOS System Cleaner</h1>
+
+<p align="center">
+  A native, open-source macOS cleaner built entirely with Swift & SwiftUI.
+  <br/>
+  Real system APIs. Zero telemetry. Polished dark-mode UI.
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-macOS%2013%2B-blue?style=flat-square&logo=apple" />
   <img src="https://img.shields.io/badge/Swift-5.9%2B-orange?style=flat-square&logo=swift" />
-  <img src="https://img.shields.io/badge/SwiftUI-5.0-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/SwiftUI-5-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" />
-  <img src="https://img.shields.io/badge/Xcode-15%2B-blue?style=flat-square&logo=xcode" />
+  <img src="https://img.shields.io/badge/Xcode-15%2B-147EFB?style=flat-square&logo=xcode" />
 </p>
 
-A full-featured, native macOS system cleaner built entirely with **Swift & SwiftUI**. Inspired by CCMac, this open-source app delivers real system scanning, junk removal, performance monitoring, duplicate detection, storage visualization, and more — all in a polished dark-mode interface.
+---
+
+## What is CCMac?
+
+CCMac is a full-featured macOS system cleaner that uses **real macOS system APIs** — no fake scans, no performance theater. It scans junk files, monitors live system metrics, detects duplicate files, visualizes disk usage as an interactive treemap, and provides AI-powered health recommendations — all in one native dark-mode app.
 
 ---
 
-## Screenshots
+## For End Users
 
-> Dark mode · macOS 13+ · 1280×800 canvas
+### Install with DMG
 
-| Smart Care | Performance | Space Lens |
-|---|---|---|
-| *Health score ring + scan results* | *Live CPU/RAM sparklines + process table* | *Treemap storage visualizer* |
+1. Download the latest **`CCMac-1.0.0.dmg`** from [Releases](https://github.com/kechankrisna/CCMac/releases)
+2. Open the DMG → drag **CCMac.app** into **Applications**
+3. **First launch:** right-click the app → **Open** (required once for ad-hoc signed builds)
+4. Grant **Full Disk Access** when prompted for full scanning capability:
+   > System Settings → Privacy & Security → Full Disk Access → add CCMac
 
----
+### System Requirements
 
-## Features
+| | Minimum |
+|---|---|
+| macOS | 13 Ventura or later |
+| Architecture | Apple Silicon (M1+) or Intel |
+| Disk space | ~10 MB |
 
-### 9 Full Modules
+### Features
+
 | Module | What it does |
 |--------|-------------|
-| **Smart Care** | One-click hub: runs all modules, shows health score ring (0–100) |
-| **Cleanup** | Scans caches, logs, mail attachments, trash, Xcode DerivedData, language files |
-| **Protection** | Quick / Normal / Deep malware scanner, app permissions manager, browser privacy tools |
-| **Performance** | Live CPU, RAM, disk, battery, network monitors with sparklines; maintenance tasks |
-| **Applications** | Lists all installed apps with sizes, finds leftover files, one-click uninstall |
-| **My Clutter** | MD5-based duplicate finder, large & old file detector |
-| **Space Lens** | Interactive treemap visualizing every folder on your disk |
-| **Cloud Cleanup** | Connects iCloud, Google Drive, OneDrive, Dropbox — scan & delete cloud files |
-| **AI Assistant** | Real-time Mac health report with prioritized recommendations |
+| 🔵 **Smart Care** | One-click hub — runs all modules, shows a 0–100 health score ring |
+| 🧹 **Cleanup** | Scans system caches, logs, mail attachments, Xcode DerivedData, language files, Trash |
+| 🛡 **Protection** | Quick / Normal / Deep threat scanner, app permissions manager, browser privacy cleaner |
+| ⚡ **Performance** | Live CPU, RAM, disk, battery, network monitors; process manager; maintenance tasks |
+| 📦 **Applications** | All installed apps with sizes, leftover file finder, one-click uninstall |
+| 🔍 **My Clutter** | MD5-based duplicate finder; large & old file detector |
+| 🗂 **Space Lens** | Interactive treemap visualising disk usage — drill into any folder |
+| ☁️ **Cloud Cleanup** | iCloud · Google Drive · OneDrive · Dropbox — scan & remove cloud junk |
+| 🤖 **AI Assistant** | Real-time health report with prioritised, actionable recommendations |
 
-### Menu Bar App
-- Live metrics popover (CPU · RAM · Disk · Battery · Network Up/Down)
-- Background protection status indicator
-- Quick-launch Smart Care and Scan from any app
+### Menu Bar
 
-### Real macOS System APIs
-| Capability | API Used |
-|------------|----------|
-| CPU usage | `host_processor_info` |
-| RAM usage | `host_statistics64` / `vm_statistics64` |
-| Disk usage | `FileManager.attributesOfFileSystem` |
-| Battery level | `IOKit` / `IOPSCopyPowerSourcesInfo` |
-| Network I/O | `getifaddrs` / `AF_LINK` |
-| Process list | `proc_listpids` / `proc_pidinfo` |
-| File scanning | `FileManager.enumerator` |
-| Duplicate detection | `CryptoKit` MD5 hashing |
-| App uninstall | `FileManager.trashItem` + leftover search |
-| DNS flush | `/usr/bin/dscacheutil` |
-| Spotlight re-index | `/usr/bin/mdutil` |
-| Open in Finder | `NSWorkspace.activateFileViewerSelecting` |
+Click the ✦ icon in the menu bar for a live dashboard: CPU · RAM · Disk · Battery · Network. Use **Smart Care** and **Scan Now** buttons to jump straight into a scan without opening the main window.
 
 ---
 
-## Requirements
+## For Developers
+
+### Prerequisites
 
 | Tool | Version |
 |------|---------|
-| macOS | 13 Ventura or later |
-| Xcode | 15 or later |
+| macOS | 13 Ventura+ |
+| Xcode | 15+ |
 | Swift | 5.9+ |
 
----
-
-## Installation
-
-### Clone the repo
+### Quick Start
 
 ```bash
 git clone https://github.com/kechankrisna/CCMac.git
 cd CCMac
-```
 
-### Open in Xcode
+# Run (debug)
+swift build && .build/debug/CCMac
 
-```bash
+# Or open in Xcode
 open Package.swift
 ```
 
-Or: **File → Open…** → select the `CCMac/` folder → Xcode resolves the Swift Package automatically.
+In Xcode, set **Destination → My Mac** and press **⌘R**.
 
-### Build & Run
+### Build a distributable DMG
 
-1. Select the **CCMac** scheme
-2. Set destination to **My Mac**
-3. Press **⌘R**
+```bash
+bash build_dmg.sh
+# → produces CCMac-1.0.0.dmg
+```
 
----
+The script: compiles a release build → assembles a `.app` bundle → generates `AppIcon.icns` from the PNG → ad-hoc signs → wraps into a compressed DMG.
 
-## Xcode Project Settings
-
-After opening, set these in **Build Settings** for full functionality:
+### Xcode Build Settings (one-time)
 
 | Setting | Value |
 |---------|-------|
 | `PRODUCT_BUNDLE_IDENTIFIER` | `com.ccmac.app` |
 | `INFOPLIST_FILE` | `Sources/CCMac/Resources/Info.plist` |
 
----
-
-## Entitlements
-
-Add to your `.entitlements` file:
-
-```xml
-<key>com.apple.security.files.user-selected.read-write</key>
-<true/>
-<key>com.apple.security.temporary-exception.files.absolute-path.read-write</key>
-<array>
-    <string>/Library/</string>
-    <string>/var/log/</string>
-</array>
-```
-
-For **Full Disk Access** (caches, logs, mail):
-Go to **System Settings → Privacy & Security → Full Disk Access** → add the built app.
-
----
-
-## Project Structure
+### Project Structure
 
 ```
 CCMac/
-├── Package.swift
+├── Package.swift                        # Swift Package Manager manifest
+├── build_dmg.sh                         # Release build → .app → DMG
+├── README.md                            # This file
+├── TECHNICAL.md                         # Full architecture & developer reference
+├── LICENSE
 └── Sources/CCMac/
     ├── App/
-    │   ├── CCMacApp.swift          # @main entry + NSStatusItem menu bar
+    │   ├── CCMacApp.swift               # @main entry, NSStatusItem, AppDelegate, Settings
     │   └── ContentView.swift            # Root layout: sidebar + module switcher
     ├── DesignSystem/
-    │   ├── AppColors.swift              # Full color palette with hex init
-    │   └── AppTypography.swift          # Font scale, spacing & border radius tokens
+    │   ├── AppColors.swift              # Color palette, LinearGradient presets
+    │   └── AppTypography.swift          # Font scale, spacing tokens, radius tokens
     ├── Models/
-    │   └── AppModels.swift              # All data models (FileItem, ThreatItem, etc.)
+    │   └── AppModels.swift              # All data models + Notification.Name constants
     ├── Services/
     │   ├── SystemMonitorService.swift   # CPU / RAM / Disk / Battery / Network / Processes
-    │   ├── CleanupService.swift         # Filesystem scanner + file deletion
+    │   ├── CleanupService.swift         # Filesystem scanner + safe file deletion
     │   ├── AppManagerService.swift      # App listing, leftover finder, uninstaller
     │   ├── DuplicateFinderService.swift # MD5 duplicate + large file detection
-    │   ├── StorageService.swift         # Recursive disk tree for Space Lens
-    │   └── MaintenanceService.swift     # DNS flush, maintenance scripts, Spotlight
+    │   ├── StorageService.swift         # Recursive disk tree builder for Space Lens
+    │   └── MaintenanceService.swift     # DNS flush, maintenance scripts, Spotlight re-index
     ├── Components/
-    │   ├── SidebarView.swift            # 220px animated sidebar navigation
-    │   └── SharedComponents.swift       # Buttons, progress rings, cards, sparklines
+    │   ├── SidebarView.swift            # 220 px animated sidebar
+    │   └── SharedComponents.swift       # Reusable UI primitives
     ├── Modules/
     │   ├── SmartCare/SmartCareView.swift
     │   ├── Cleanup/CleanupView.swift
@@ -160,37 +144,67 @@ CCMac/
     │   ├── CloudCleanup/CloudCleanupView.swift
     │   └── Assistant/AssistantView.swift
     ├── MenuBar/
-    │   └── MenuBarView.swift            # 340×420px popover with live metrics
+    │   └── MenuBarView.swift            # 340×420 px live-metrics popover
     └── Resources/
-        └── Info.plist                   # Bundle ID + privacy descriptions
+        ├── Info.plist                   # Bundle ID, LSMinimumSystemVersion, privacy keys
+        └── AppIcon.png                  # 1024×1024 source icon (replace to customise)
 ```
+
+### Architecture at a Glance
+
+```
+┌─────────────────────────────────────────────────┐
+│  CCMacApp (@main)  ·  AppDelegate (NSStatusItem) │
+└──────────────┬──────────────────┬────────────────┘
+               │                  │
+        ContentView          MenuBarPopoverView
+     (sidebar + modules)    (live metrics popover)
+               │                  │
+    ┌──────────▼──────┐    NotificationCenter
+    │  9 Module Views │◄───────────────────────────┐
+    └──────────┬──────┘                            │
+               │  @StateObject / @ObservedObject    │
+    ┌──────────▼──────────────────────────────┐    │
+    │           Service Layer                  │    │
+    │  SystemMonitor · Cleanup · AppManager   │    │
+    │  DuplicateFinder · Storage · Maintenance│    │
+    └──────────┬──────────────────────────────┘    │
+               │  macOS system APIs                 │
+    ┌──────────▼──────────────────────────────┐    │
+    │  host_processor_info · getifaddrs       │    │
+    │  IOKit · proc_listpids · FileManager    │    │
+    │  CryptoKit · Process (shell commands)   │    │
+    └─────────────────────────────────────────┘    │
+                                                    │
+    MenuBarView buttons ───────────────────────────┘
+    (Smart Care / Scan Now / Open CCMac)
+```
+
+For full technical details — services, state machines, known fixes, design tokens, and how to add a new module — see **[TECHNICAL.md](TECHNICAL.md)**.
 
 ---
 
 ## Design System
 
-Based on a custom Figma design guide — dark mode primary, light mode secondary.
+Dark-mode first, light-mode ready. Based on a custom Figma design guide.
 
-| Token | Dark | Light |
-|-------|------|-------|
-| Background | `#0F1B26` | `#F0F4F8` |
-| Surface | `#1C2E3E` | `#FFFFFF` |
-| Brand Blue | `#1A6B9A` | `#1A6B9A` |
-| Brand Green (CTA) | `#2E9C6A` | `#2E9C6A` |
-| Danger Red | `#E05252` | `#E05252` |
-| Text Primary | `#FFFFFF` | `#1A2B38` |
-| Text Secondary | `#8BA8BE` | `#4A6A80` |
+| Token | Value | Usage |
+|-------|-------|-------|
+| Background | `#0F1B26` | Main window background |
+| Surface | `#1C2E3E` | Cards and panels |
+| Brand Green | `#2E9C6A` | Primary CTA, health ring |
+| Brand Blue | `#1A6B9A` | Links, info accents |
+| Danger Red | `#E05252` | Threats, destructive actions |
+| Text Primary | `#FFFFFF` | Headings and labels |
+| Text Secondary | `#8BA8BE` | Subtitles and descriptions |
 
-Typography: SF Pro Display / SF Pro Text (macOS system font) · 8px base grid · 24px gutter
+Typography: SF Pro Display / SF Pro Text · 8 px grid · 24 px gutter
 
 ---
 
-## Notes
+## Privacy
 
-- **Malware detection** scans the filesystem but does not ship with a threat database. Integrate [ClamAV](https://www.clamav.net/) or a similar engine for real detection.
-- **Cloud cleanup** UI is complete; OAuth tokens for Google Drive / OneDrive / Dropbox require registering your own API credentials.
-- **Full Disk Access** must be granted in System Settings for scanning protected directories.
-- Targets **macOS 13 Ventura** and is ready for **macOS Tahoe (macOS 26)**.
+CCMac accesses your file system only to scan and report — it never uploads data, contacts remote servers, or tracks usage. The three `NSUsageDescription` keys in `Info.plist` cover Desktop, Documents, and Downloads access for file scanning only.
 
 ---
 
@@ -198,21 +212,27 @@ Typography: SF Pro Display / SF Pro Text (macOS system font) · 8px base grid ·
 
 Pull requests are welcome! Please open an issue first to discuss what you'd like to change.
 
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m 'Add your feature'`
-4. Push to the branch: `git push origin feature/your-feature`
-5. Open a Pull Request
+```bash
+git checkout -b feature/your-feature
+git commit -m "feat: describe your change"
+git push origin feature/your-feature
+# then open a Pull Request
+```
+
+---
+
+## Limitations & Known Gaps
+
+- **Malware detection** scans the filesystem but ships without a threat database. Integrate [ClamAV](https://www.clamav.net/) for real-world detection.
+- **Cloud cleanup** UI is complete; OAuth tokens for Google Drive / OneDrive / Dropbox require registering your own API credentials.
+- **Full Disk Access** must be granted manually in System Settings for scanning protected directories.
 
 ---
 
 ## Author
 
-**KE CHANKRISNA**
-ke.chankrisna168@gmail.com
-
----
+**KE CHANKRISNA** · ke.chankrisna168@gmail.com
 
 ## License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+MIT License — see [LICENSE](LICENSE) for details.
