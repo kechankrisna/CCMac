@@ -14,12 +14,6 @@ let package = Package(
             exclude: ["Resources/Info.plist"],
             resources: [
                 .process("Resources")
-            ],
-            linkerSettings: [
-                .unsafeFlags([
-                    "-sectcreate", "__TEXT", "__info_plist",
-                    "Sources/CCMac/Resources/Info.plist"
-                ])
             ]
         )
     ]
