@@ -48,9 +48,7 @@ struct AssistantView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .assistant,
-                subtitle: "Personalized Mac health insights powered by AI",
-                actionLabel: "Refresh",
-                onAction: { report = Self.generateReport() }
+                subtitle: "Personalized Mac health insights powered by AI"
             )
 
             HStack(spacing: 0) {

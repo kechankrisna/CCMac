@@ -20,9 +20,7 @@ struct CloudCleanupView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .cloudCleanup,
-                subtitle: "Clean files from your cloud storage services",
-                actionLabel: "Refresh",
-                onAction: {}
+                subtitle: "Clean files from your cloud storage services"
             )
 
             switch tab {

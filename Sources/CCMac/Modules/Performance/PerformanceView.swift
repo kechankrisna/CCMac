@@ -11,9 +11,7 @@ struct PerformanceView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .performance,
-                subtitle: "Real-time monitoring and maintenance tasks",
-                actionLabel: "Free Up RAM",
-                onAction: { freeRAM() }
+                subtitle: "Real-time monitoring and maintenance tasks"
             )
 
             ScrollView {

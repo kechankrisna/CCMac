@@ -70,10 +70,7 @@ struct ProtectionView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .protection,
-                subtitle: "Powered by Moonlock Engine",
-                actionLabel: "Scan Now",
-                isScanning: vm.state == .scanning,
-                onAction: { vm.startScan() }
+                subtitle: "Powered by Moonlock Engine"
             )
             switch vm.state {
             case .overview:      ProtectionOverviewView(vm: vm)

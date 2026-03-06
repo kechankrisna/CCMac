@@ -15,10 +15,7 @@ struct SpaceLensView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .spaceLens,
-                subtitle: "Visualize what's taking up your disk space",
-                actionLabel: service.isScanning ? "Scanning…" : "Scan Disk",
-                isScanning: service.isScanning,
-                onAction: { scanDisk() }
+                subtitle: "Visualize what's taking up your disk space"
             )
 
             if service.isScanning {

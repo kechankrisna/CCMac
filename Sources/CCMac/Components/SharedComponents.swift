@@ -4,9 +4,9 @@ import SwiftUI
 struct ModuleHeaderView: View {
     let module: AppModule
     let subtitle: String
-    let actionLabel: String
+    var actionLabel: String? = nil
     var isScanning: Bool = false
-    var onAction: () -> Void
+    var onAction: (() -> Void)? = nil
     var onSettings: (() -> Void)? = nil
 
     var body: some View {
@@ -27,10 +27,12 @@ struct ModuleHeaderView: View {
                 }
                 .buttonStyle(.plain)
             }
-            CMButton(isScanning ? "Scanning…" : actionLabel, icon: isScanning ? "arrow.triangle.2.circlepath" : nil) {
-                if !isScanning { onAction() }
+            if let label = actionLabel {
+                CMButton(isScanning ? "Scanning…" : label, icon: isScanning ? "arrow.triangle.2.circlepath" : nil) {
+                    if !isScanning { onAction?() }
+                }
+                .disabled(isScanning)
             }
-            .disabled(isScanning)
         }
         .padding(.horizontal, AppSpacing.section)
         .frame(height: 80)

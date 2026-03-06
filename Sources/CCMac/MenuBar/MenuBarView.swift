@@ -68,23 +68,36 @@ struct MenuBarPopoverView: View {
 
             Divider().overlay(Color.white.opacity(0.06))
 
-            // 2×3 Metric Grid
+            // 2×3 Metric Grid (Figma spec: icon+label → value H2 → sparkline 40px)
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())],
-                      spacing: AppSpacing.base) {
+                      spacing: AppSpacing.compact) {
                 MenuBarMetricCell(icon: "cpu.fill", label: "CPU",
-                                  value: monitor.metrics.cpuString, color: .warningOrange)
+                                  value: monitor.metrics.cpuString,
+                                  color: .warningOrange,
+                                  history: monitor.cpuHistory)
                 MenuBarMetricCell(icon: "memorychip.fill", label: "RAM",
-                                  value: monitor.metrics.ramUsedString, color: .infoBlue)
+                                  value: monitor.metrics.ramUsedString,
+                                  color: .infoBlue,
+                                  history: monitor.ramHistory)
                 MenuBarMetricCell(icon: "internaldrive.fill", label: "Disk",
-                                  value: monitor.metrics.diskFreeString, color: .brandGreen)
+                                  value: monitor.metrics.diskFreeString,
+                                  color: .brandGreen,
+                                  history: monitor.diskHistory)
                 MenuBarMetricCell(icon: "battery.100", label: "Battery",
-                                  value: String(format: "%.0f%%", monitor.metrics.batteryLevel), color: .successGreen)
+                                  value: String(format: "%.0f%%", monitor.metrics.batteryLevel),
+                                  color: .successGreen,
+                                  history: monitor.batteryHistory)
                 MenuBarMetricCell(icon: "arrow.down.circle.fill", label: "Down",
-                                  value: formatBytes(monitor.metrics.networkDown) + "/s", color: .brandBlue)
+                                  value: formatBytes(monitor.metrics.networkDown) + "/s",
+                                  color: .brandBlue,
+                                  history: monitor.netDownHistory)
                 MenuBarMetricCell(icon: "arrow.up.circle.fill", label: "Up",
-                                  value: formatBytes(monitor.metrics.networkUp) + "/s", color: .assistantPurple)
+                                  value: formatBytes(monitor.metrics.networkUp) + "/s",
+                                  color: .assistantPurple,
+                                  history: monitor.netUpHistory)
             }
-            .padding(AppSpacing.standard)
+            .padding(.horizontal, AppSpacing.standard)
+            .padding(.vertical, AppSpacing.compact)
 
             Divider().overlay(Color.white.opacity(0.06))
 
@@ -129,6 +142,7 @@ struct MenuBarPopoverView: View {
             .padding(.vertical, AppSpacing.compact)
         }
         .frame(width: 340)
+        .fixedSize(horizontal: false, vertical: true)
         .background(Color.bgDark)
         .onAppear { monitor.startMonitoring() }
         .onDisappear { monitor.stopMonitoring() }
@@ -170,17 +184,42 @@ struct MenuBarPopoverView: View {
 }
 
 struct MenuBarMetricCell: View {
-    let icon: String; let label: String; let value: String; let color: Color
+    let icon: String
+    let label: String
+    let value: String
+    let color: Color
+    var history: [Double] = []
 
     var body: some View {
-        VStack(spacing: 4) {
-            Image(systemName: icon).font(.system(size: 14)).foregroundColor(color)
-            Text(value).font(AppFont.bodyDefault).foregroundColor(.textPrimary).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
-            Text(label).font(AppFont.bodySmall).foregroundColor(.textSecondary)
+        VStack(alignment: .leading, spacing: 5) {
+            // Row 1: Icon + Label
+            HStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(color)
+                Text(label)
+                    .font(AppFont.labelBadge)
+                    .foregroundColor(.textSecondary)
+                Spacer()
+            }
+
+            // Row 2: Live value (Heading 2 / large)
+            Text(value)
+                .font(AppFont.heading2)
+                .foregroundColor(.textPrimary)
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.55)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            // Row 3: Sparkline (40px, brand color)
+            SparklineView(data: history.isEmpty ? [0, 0] : history, color: color)
+                .frame(height: 32)
         }
-        .frame(maxWidth: .infinity)
+        .padding(.horizontal, AppSpacing.compact)
         .padding(.vertical, AppSpacing.compact)
+        .frame(maxWidth: .infinity)
         .background(Color.surfaceDark)
-        .cornerRadius(AppRadius.small)
+        .cornerRadius(AppRadius.medium)
     }
 }

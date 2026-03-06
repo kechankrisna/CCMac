@@ -10,9 +10,12 @@ class SystemMonitorService: ObservableObject {
         diskUsed: 0, diskTotal: 0,
         batteryLevel: 100, networkDown: 0, networkUp: 0
     )
-    @Published var cpuHistory: [Double] = Array(repeating: 0, count: 60)
-    @Published var ramHistory: [Double] = Array(repeating: 0, count: 60)
+    @Published var cpuHistory:     [Double] = Array(repeating: 0, count: 60)
+    @Published var ramHistory:     [Double] = Array(repeating: 0, count: 60)
+    @Published var diskHistory:    [Double] = Array(repeating: 0, count: 60)
+    @Published var batteryHistory: [Double] = Array(repeating: 0, count: 60)
     @Published var netDownHistory: [Double] = Array(repeating: 0, count: 60)
+    @Published var netUpHistory:   [Double] = Array(repeating: 0, count: 60)
     @Published var processes: [ProcessInfo2] = []
 
     private var timer: Timer?
@@ -63,8 +66,14 @@ class SystemMonitorService: ObservableObject {
                 if self.cpuHistory.count > 60 { self.cpuHistory.removeFirst() }
                 self.ramHistory.append(self.metrics.ramPercent * 100)
                 if self.ramHistory.count > 60 { self.ramHistory.removeFirst() }
+                self.diskHistory.append(self.metrics.diskPercent * 100)
+                if self.diskHistory.count > 60 { self.diskHistory.removeFirst() }
+                self.batteryHistory.append(battery)
+                if self.batteryHistory.count > 60 { self.batteryHistory.removeFirst() }
                 self.netDownHistory.append(net.down)
                 if self.netDownHistory.count > 60 { self.netDownHistory.removeFirst() }
+                self.netUpHistory.append(net.up)
+                if self.netUpHistory.count > 60 { self.netUpHistory.removeFirst() }
                 self.processes = procs
             }
         }

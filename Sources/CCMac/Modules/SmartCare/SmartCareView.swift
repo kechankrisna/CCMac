@@ -65,10 +65,7 @@ struct SmartCareView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .smartCare,
-                subtitle: "Scan and optimize your Mac in one click",
-                actionLabel: "Run Smart Care",
-                isScanning: vm.state == .scanning,
-                onAction: { vm.startScan() }
+                subtitle: "Scan and optimize your Mac in one click"
             )
 
             Group {

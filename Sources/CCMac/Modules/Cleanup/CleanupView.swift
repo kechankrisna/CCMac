@@ -52,10 +52,7 @@ struct CleanupView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .cleanup,
-                subtitle: "Remove junk files and free up disk space",
-                actionLabel: "Scan",
-                isScanning: vm.state == .scanning,
-                onAction: { vm.scan() }
+                subtitle: "Remove junk files and free up disk space"
             )
             switch vm.state {
             case .overview:    CleanupOverviewView(vm: vm)

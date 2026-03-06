@@ -65,9 +65,7 @@ struct ApplicationsView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .applications,
-                subtitle: "Uninstall apps and stay up to date",
-                actionLabel: "Refresh",
-                onAction: { vm.load() }
+                subtitle: "Uninstall apps and stay up to date"
             )
 
             // Tab Selector

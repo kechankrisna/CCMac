@@ -54,10 +54,7 @@ struct MyClutterView: View {
         VStack(spacing: 0) {
             ModuleHeaderView(
                 module: .myClutter,
-                subtitle: "Find duplicates, similar photos, and large files",
-                actionLabel: "Scan",
-                isScanning: vm.state == .scanning,
-                onAction: {}
+                subtitle: "Find duplicates, similar photos, and large files"
             )
             switch vm.state {
             case .overview:  MyClutterOverview(vm: vm)
